@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: payments-view
+        uri: http://localhost:8079/
+        predicates:
+        - Path=/view/payments/customer
+      - id: payments-aggregate
+        uri: http://localhost:8081/
+        predicates:
+        - Path=/payments/aggregator
+      
