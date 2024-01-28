@@ -10,7 +10,7 @@
 5. Launch microservices
    - git clone in to your local & then launch with below commands
    - Launch payments microservice
-     - cd <application-path-in-your-local-machine>\payments-processor
+     - cd your-local-machine-path\payments-processor
      - mvn clean install
      - java -jar target/scg-payments-processor.jar
    - Launch customers microservice
