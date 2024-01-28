@@ -1,4 +1,4 @@
-1.# SpringCloudGateway to accomplish GDPR compliance challenges.
+1. SpringCloudGateway to accomplish GDPR compliance challenges.
 2. Problem statement & solution approach - [https://vijayredkar.medium.com/](https://vijayredkar.medium.com/banknext-case-study-gdpr-challenges-solved-with-springcloudgateway-e8688050e7c8)
 3. Architecture diagram - ![SpringCloudGateway_GDPR_Arch](https://github.com/vijayredkar/SpringCloudGateway-to-solve-GDPR-challenge/assets/25388646/218cb309-e6f2-4f6e-a437-945567aa4bf6)
 
