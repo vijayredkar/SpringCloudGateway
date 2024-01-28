@@ -37,7 +37,7 @@
   --header 'Content-Type: application/json' \
   --header 'Cookie: JSESSIONID=5A5EE3A133ACFBB487A1512988C4A119' \
   --cookie JSESSIONID=5A5EE3A133ACFBB487A1512988C4A119
-  - Observe that the response shows sensitive data in plain text. This violates GDPR.
+     - Observe that the response shows sensitive data in plain text. This violates GDPR.
    - Invoke the core payments and customers microservices via the SpringCloudGateway with the below cURLs
      - curl --request GET \
   --url http://localhost:8079/view/payments/report \
@@ -49,4 +49,4 @@
   --header 'Content-Type: application/json' \
   --header 'Cookie: JSESSIONID=5A5EE3A133ACFBB487A1512988C4A119' \
   --cookie JSESSIONID=5A5EE3A133ACFBB487A1512988C4A119
-  - Observe that the response now shows sensitive data masked. Thus ahering to the GDPR compliance.
+     - Observe that the response now shows sensitive data masked. Thus ahering to the GDPR compliance.
