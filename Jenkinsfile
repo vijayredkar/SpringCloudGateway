@@ -19,7 +19,9 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    sh 'mvn test'
+                    dir(customer-payments-client-directory) {
+                        sh 'mvn test'
+                    }
                 }
             }
         }
