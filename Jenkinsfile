@@ -4,6 +4,9 @@ pipeline {
     /*environment {
         // Define global variables
     }*/
+    tools {
+        maven '3.9.6'
+    }
     stages {
         stage('Build Standalone Modules') {
             steps {
