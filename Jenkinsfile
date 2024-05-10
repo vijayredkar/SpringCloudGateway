@@ -1,9 +1,9 @@
 
 pipeline {
     agent any
-    environment {
+    /*environment {
         // Define global variables
-    }
+    }*/
     stages {
         stage('Build Standalone Modules') {
             steps {
