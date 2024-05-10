@@ -50,4 +50,3 @@
   --header 'Cookie: JSESSIONID=5A5EE3A133ACFBB487A1512988C4A119' \
   --cookie JSESSIONID=5A5EE3A133ACFBB487A1512988C4A119
      - Observe that the response now shows sensitive data masked. Thus ahering to the GDPR compliance.
-Simple Test !
