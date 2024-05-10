@@ -8,10 +8,6 @@ pipeline {
         CUSTOMERS_PROCESSOR_MODULE= 'customers-processor'
         PAYMENTS_PROCESSOR_MODULE = 'payments-processor'
     }
-    String customer-payments-client-directory = 'customer-payments-client'
-    String customer-payments-gateway-directory = 'customer-payments-scg-gtwy'
-    String customers-processor-directory = 'customers-processor'
-    String payments-processor-directory = 'payments-processor'
     stages {
         stage('Build') {
             steps {
