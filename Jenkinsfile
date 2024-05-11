@@ -83,7 +83,7 @@ pipeline {
                     echo '***** Executing Customers Aggregator Scenario *****'
                     response = sh(script: "curl --location --silent 'http://host.docker.internal:8082/customers/aggregator' --header 'Content-Type: application/json' --header 'Cookie: JSESSIONID=5A5EE3A133ACFBB487A1512988C4A119'", returnStdout: true).trim()
                     // Use jq to check if the response is as expected
-                    def isValid = sh(script: """
+                    isValid = sh(script: """
                         echo '${response}'
                         echo '${response}' | jq -e '
                         .source == \"Customer Aggregator response : has SENSITIVE PII\" and
@@ -106,7 +106,7 @@ pipeline {
                     echo '***** Executing Payments Report Scenario *****'
                     response = sh(script: "curl --location --silent 'http://host.docker.internal:8079/view/payments/report' --header 'Content-Type: application/json' --header 'Cookie: JSESSIONID=5A5EE3A133ACFBB487A1512988C4A119'", returnStdout: true).trim()
                     // Use jq to check if the response is as expected
-                    def isValid = sh(script: """
+                    isValid = sh(script: """
                         echo '${response}'
                         echo '${response}' | jq -e '
                         .source == \"Payments Aggregator response : has SENSITIVE PCI\" and
@@ -130,7 +130,7 @@ pipeline {
                     echo '***** Executing Customers Report Scenario *****'
                     response = sh(script: "curl --location --silent 'http://host.docker.internal:8079/view/payments/report' --header 'Content-Type: application/json' --header 'Cookie: JSESSIONID=5A5EE3A133ACFBB487A1512988C4A119'", returnStdout: true).trim()
                     // Use jq to check if the response is as expected
-                    def isValid = sh(script: """
+                    isValid = sh(script: """
                         echo '${response}'
                         echo '${response}' | jq -e '
                         .source == \"Customer Aggregator response : has SENSITIVE PII\" and
