@@ -110,12 +110,12 @@ pipeline {
                         echo '${response}'
                         echo '${response}' | jq -e '
                         .source == \"Payment Aggregator response : has SENSITIVE PCI\" and
-                        (.firstName | test("^\\*+$"))
-                        (.lastName | test("^\\*+$"))
+                        .firstName == \"****\" and
+                        .lastName == \"****\" and
                         .maritalStatus == \"M\" and
                         .citizenship == \"USA\" and
                         .currentResidenceCountry == \"GB\" and
-                        (.creditcardnumber | test("^\\*+$"))
+                        .creditcardnumber == \"****\"
                         '
                     """, returnStatus: true) == 0
                     currentReportContent = readFile 'tap-results.tap'
