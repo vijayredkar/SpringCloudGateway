@@ -1,5 +1,4 @@
 version: '3.8'
-name: nextbank-app
 services:
   bank-next-api-gateway:
     build:
