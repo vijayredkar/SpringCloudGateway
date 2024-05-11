@@ -38,11 +38,11 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
+        stage('Run Docker Container') {
             steps {
                 script {
-                    echo "Deploying application ..."
-                    // Add deployment scripts here
+                    echo "***** Deploying application using Docker Compose *****"
+                    sh 'docker-compose up -build -d'
                 }
             }
         }

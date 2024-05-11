@@ -34,7 +34,7 @@ public class ClientViewController {
 		LOGGER.info("\n---- Payments View initiated");
 		RestTemplate rst = new RestTemplate();
 		
-		String url = "http://localhost:8888/payments/aggregator";
+		String url = "http://bank-next-api-gateway:8888/payments/aggregator";
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);		
 		HttpEntity<?> httpEntity = new HttpEntity<>(headers);
@@ -62,7 +62,7 @@ public class ClientViewController {
 		LOGGER.info("\n---- Customers View initiated");
 		RestTemplate rst = new RestTemplate();
 		
-		String url = "http://localhost:8888/customers/aggregator";
+		String url = "http://bank-next-api-gateway:8888/customers/aggregator";
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);		
 		HttpEntity<?> httpEntity = new HttpEntity<>(headers);

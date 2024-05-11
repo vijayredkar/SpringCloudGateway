@@ -1,0 +1,49 @@
+version: '3.8'
+name: nextbank-app
+services:
+  bank-next-api-gateway:
+    build:
+      context: ./customer-payments-scg-gtwy
+      dockerfile: Dockerfile
+    hostname: bank-next-api-gateway
+    networks:
+      - nextbank-app-network
+    ports:
+      - "8888:8888"
+    depends_on:
+      - payments-processor-app
+      - customers-processor-app
+  customer-payment-client-app:
+    build:
+      context: ./customer-payments-client
+      dockerfile: Dockerfile
+    hostname: customer-payment-client-app
+    networks:
+      - nextbank-app-network
+    ports:
+      - "8079:8079"
+    depends_on:
+      - payments-processor-app
+      - customers-processor-app
+  payments-processor-app:
+    build:
+      context: ./payments-processor
+      dockerfile: Dockerfile
+    hostname: payments-processor-app
+    networks:
+      - nextbank-app-network
+    ports:
+      - "8081:8081"
+  customers-processor-app:
+    build:
+      context: ./customers-processor
+      dockerfile: Dockerfile
+    hostname: customers-processor-app
+    networks:
+      - nextbank-app-network
+    ports:
+      - "8082:8082"
+
+networks:
+  nextbank-app-network:
+    driver: bridge
