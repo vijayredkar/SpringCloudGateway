@@ -60,15 +60,15 @@ pipeline {
                     def response = sh(script: "curl --location --silent 'http://host.docker.internal:8081/payments/aggregator' --header 'Content-Type: application/json' --header 'Cookie: JSESSIONID=5A5EE3A133ACFBB487A1512988C4A119'", returnStdout: true).trim()
                     // Use jq to check if the response is as expected
                     def isValid = sh(script: """
-                        echo '\${response}'
-                        echo '\${response}' | jq -e '
-                        .source == "Payments Aggregator response : has SENSITIVE PCI" and
-                        .firstName == "Sam" and
-                        .lastName == "Markson" and
-                        .maritalStatus == "M" and
-                        .citizenship == "USA" and
-                        .currentResidenceCountry == "GB" and
-                        .creditcardnumber == "5242677622358871"
+                        echo '${response}'
+                        echo '${response}' | jq -e '
+                        .source == \"Payments Aggregator response : has SENSITIVE PCI\" and
+                        .firstName == \"Sam\" and
+                        .lastName == \"Markson\" and
+                        .maritalStatus == \"M\" and
+                        .citizenship == \"USA\" and
+                        .currentResidenceCountry == \"GB\" and
+                        .creditcardnumber == \"5242677622358871\"
                         '
                     """, returnStatus: true) == 0
                     def currentReportContent = readFile 'tap-results.tap'
@@ -83,15 +83,15 @@ pipeline {
                     echo '***** Executing Customers Aggregator Scenario *****'
                     response = sh(script: "curl --location --silent 'http://host.docker.internal:8082/customers/aggregator' --header 'Content-Type: application/json' --header 'Cookie: JSESSIONID=5A5EE3A133ACFBB487A1512988C4A119'", returnStdout: true).trim()
                     // Use jq to check if the response is as expected
-                    isValid = sh(script: """
-                        echo '\${response}'
-                        echo '\${response}' | jq -e '
-                        .source == "Customer Aggregator response : has SENSITIVE PII" and
-                        .firstName == "Peter" and
-                        .lastName == "Markel" and
-                        .citizenship == "FRA" and
-                        .telephoneNumber == "+826785438752" and
-                        .emailAddress == "peter_m@gmail.com"
+                    def isValid = sh(script: """
+                        echo '${response}'
+                        echo '${response}' | jq -e '
+                        .source == \"Customer Aggregator response : has SENSITIVE PII\" and
+                        .firstName == \"Peter\" and
+                        .lastName == \"Markel\" and
+                        .citizenship == \"FRA\" and
+                        .telephoneNumber == \"+826785438752\" and
+                        .emailAddress == \"peter_m@gmail.com\"
                         '
                     """, returnStatus: true) == 0
                     currentReportContent = readFile 'tap-results.tap'
@@ -106,16 +106,16 @@ pipeline {
                     echo '***** Executing Payments Report Scenario *****'
                     response = sh(script: "curl --location --silent 'http://host.docker.internal:8079/view/payments/report' --header 'Content-Type: application/json' --header 'Cookie: JSESSIONID=5A5EE3A133ACFBB487A1512988C4A119'", returnStdout: true).trim()
                     // Use jq to check if the response is as expected
-                    isValid = sh(script: """
-                        echo '\${response}'
-                        echo '\${response}' | jq -e '
-                        .source == "Payment Aggregator response : has SENSITIVE PCI" and
-                        .firstName == "****" and
-                        .lastName == "****" and
-                        .maritalStatus == "M" and
-                        .citizenship == "USA" and
-                        .currentResidenceCountry == "GB" and
-                        .creditcardnumber == "****"
+                    def isValid = sh(script: """
+                        echo '${response}'
+                        echo '${response}' | jq -e '
+                        .source == \"Payments Aggregator response : has SENSITIVE PCI\" and
+                        .firstName == \"****\" and
+                        .lastName == \"****\" and
+                        .maritalStatus == \"M\" and
+                        .citizenship == \"USA\" and
+                        .currentResidenceCountry == \"GB\" and
+                        .creditcardnumber == \"****\"
                         '
                     """, returnStatus: true) == 0
                     currentReportContent = readFile 'tap-results.tap'
@@ -130,15 +130,15 @@ pipeline {
                     echo '***** Executing Customers Report Scenario *****'
                     response = sh(script: "curl --location --silent 'http://host.docker.internal:8079/view/payments/report' --header 'Content-Type: application/json' --header 'Cookie: JSESSIONID=5A5EE3A133ACFBB487A1512988C4A119'", returnStdout: true).trim()
                     // Use jq to check if the response is as expected
-                    isValid = sh(script: """
-                        echo '\${response}'
-                        echo '\${response}' | jq -e '
-                        .source == "Customer Aggregator response : has SENSITIVE PII" and
-                        .firstName == "****" and
-                        .lastName == "****" and
-                        .citizenship == "FRA" and
-                        .telephoneNumber == "****" and
-                        .emailAddress == "****"
+                    def isValid = sh(script: """
+                        echo '${response}'
+                        echo '${response}' | jq -e '
+                        .source == \"Customer Aggregator response : has SENSITIVE PII\" and
+                        .firstName == \"****\" and
+                        .lastName == \"****\" and
+                        .citizenship == \"FRA\" and
+                        .telephoneNumber == \"****\" and
+                        .emailAddress == \"****\"
                         '
                     """, returnStatus: true) == 0
                     currentReportContent = readFile 'tap-results.tap'
