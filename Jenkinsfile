@@ -38,11 +38,29 @@ pipeline {
                 }
             }
         }
-        stage('Run Docker Container') {
+        stage('Run Docker Containers') {
             steps {
                 script {
                     echo "***** Deploying application using Docker Compose *****"
                     sh 'docker-compose up --build -d'
+                }
+            }
+        }
+        stage('Execute Integration Test') {
+            steps {
+                script {
+                    // Assume these are your curl commands and you capture the output
+                    def response = sh(script: "curl --silent --location 'http://localhost:8081/payments/aggregator' --header 'Content-Type: application/json' --header 'Cookie: JSESSIONID=5A5EE3A133ACFBB487A1512988C4A119'", returnStdout: true).trim()
+                    // Use jq to check if the response is as expected
+                    def isValid = sh(script: "echo '${response}' | jq -e '.firstName == \"Sam\" and .lastName == \"Markson\"'", returnStatus: true) == 0
+
+                    // Write TAP results to a file
+                    writeFile file: 'tap-results.tap', text: "1..1\n"
+                    if (isValid) {
+                        writeFile file: 'tap-results.tap', text: "ok 1 - Payment aggregator response is valid\n", append: true
+                    } else {
+                        writeFile file: 'tap-results.tap', text: "not ok 1 - Payment aggregator response is invalid\n", append: true
+                    }
                 }
             }
         }
@@ -52,6 +70,8 @@ pipeline {
             script {
                 echo "***** Cleaning up Docker containers *****"
                 sh 'docker-compose down'
+                echo "***** Publishing TAP Results *****"
+                step([$class: 'TapPublisher', testResults: 'tap-results.tap', failIfNoResults: true, failedTestsMarkBuildAsFailure: true])
             }
         }
     }
