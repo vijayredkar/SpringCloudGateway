@@ -107,12 +107,12 @@ pipeline {
                     isValid = sh(script: """
                         echo '\${response}' | jq -e '
                         .source == "Payment Aggregator response : has SENSITIVE PCI" and
-                        (.firstName | test("^\\*+$")) and
-                        (.lastName | test("^\\*+$")) and
+                        (.firstName | test("^\\\\*+\\$")) and
+                        (.lastName | test("^\\\\*+\\$")) and
                         .maritalStatus == "M" and
                         .citizenship == "USA" and
                         .currentResidenceCountry == "GB" and
-                        (.creditcardnumber | test("^\\*+$"))
+                        (.creditcardnumber | test("^\\\\*+\\$"))
                         '
                     """, returnStatus: true) == 0
                     currentReportContent = readFile 'tap-results.tap'
@@ -130,11 +130,11 @@ pipeline {
                     isValid = sh(script: """
                         echo '\${response}' | jq -e '
                         .source == "Customer Aggregator response : has SENSITIVE PII" and
-                        (.firstName | test("^\\*+$")) and
-                        (.lastName | test("^\\*+$")) and
+                        (.firstName | test("^\\\\*+\\$")) and
+                        (.lastName | test("^\\\\*+\\$")) and
                         .citizenship == "FRA" and
-                        (.telephoneNumber | test("^\\*+$")) and
-                        (.emailAddress | test("^\\*+$"))
+                        (.telephoneNumber | test("^\\\\*+\\$")) and
+                        (.emailAddress | test("^\\\\*+\\$"))
                         '
                     """, returnStatus: true) == 0
                     currentReportContent = readFile 'tap-results.tap'
