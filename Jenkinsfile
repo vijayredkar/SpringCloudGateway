@@ -42,7 +42,15 @@ pipeline {
             steps {
                 script {
                     echo "***** Deploying application using Docker Compose *****"
-                    sh 'docker-compose up -build -d'
+                    sh 'docker-compose up --build -d'
+                }
+            }
+        }
+        post {
+            always {
+                script {
+                    echo "***** Cleaning up Docker containers *****"
+                    sh 'docker-compose down'
                 }
             }
         }
