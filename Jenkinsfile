@@ -52,6 +52,8 @@ pipeline {
             steps {
                 script {
                     echo '***** Start Executing Integration Test *****'
+                    echo '***** Writing to File :: tap-results.tap *****'
+                    writeFile file: 'tap-results.tap', text: "1..1\n"
                     // Log the current directory
                     sh 'pwd'
                     sh 'ls -l'
@@ -61,8 +63,6 @@ pipeline {
                     // Use jq to check if the response is as expected
                     def isValid = sh(script: "echo '${response}' | jq -e '.firstName == \"Sam\" and .lastName == \"Markson\"'", returnStatus: true) == 0
 
-                    // Write TAP results to a file
-                    writeFile file: 'tap-results.tap', text: "1..1\n"
                     if (isValid) {
                         echo '***** Payment Aggregator Response is Valid *****'
                         writeFile file: 'tap-results.tap', text: "ok 1 - Payment Aggregator Response is Valid\n", append: true
@@ -70,8 +70,8 @@ pipeline {
                         echo '***** Payment Aggregator Response is Invalid *****'
                         writeFile file: 'tap-results.tap', text: "not ok 1 - Payment Aggregator Response is Invalid\n", append: true
                     }
-                    // Log files in the directory again to ensure tap-results generated
-                    sh 'ls -l'
+                    def content = readFile 'tap-results.tap'
+                    echo '***** Content of tap-results.tap :: ${content} *****'
                 }
             }
         }
