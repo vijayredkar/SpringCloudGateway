@@ -46,12 +46,12 @@ pipeline {
                 }
             }
         }
-        post {
-            always {
-                script {
-                    echo "***** Cleaning up Docker containers *****"
-                    sh 'docker-compose down'
-                }
+    }
+    post {
+        always {
+            script {
+                echo "***** Cleaning up Docker containers *****"
+                sh 'docker-compose down'
             }
         }
     }
