@@ -44,7 +44,7 @@ pipeline {
                     echo "***** Deploying application using Docker Compose *****"
                     sh 'docker-compose up --build -d'
                     // Pause the pipeline for a predetermined time
-                    sleep(30) // Sleep for 30 seconds
+                    sleep(15) // Sleep for 15 seconds
                 }
             }
         }
@@ -52,13 +52,24 @@ pipeline {
             steps {
                 script {
                     echo '***** Start Executing Integration Test *****'
-                    echo '***** Writing to File :: tap-results.tap *****'
-                    writeFile file: 'tap-results.tap', text: '1..1\n'
+                    echo '***** Creating TAP Results File :: tap-results.tap *****'
+                    writeFile file: 'tap-results.tap', text: '2..2\n'
+
+                    echo '***** Executing Payment Aggregator Scenario *****'
                     // Assume these are your curl commands and you capture the output
-                    def response = sh(script: "curl --location 'http://host.docker.internal:8081/payments/aggregator' --header 'Content-Type: application/json' --header 'Cookie: JSESSIONID=5A5EE3A133ACFBB487A1512988C4A119'", returnStdout: true).trim()
-                    echo '***** CURL Response ::: ' + response + ' *****'
+                    def response = sh(script: "curl --location --silent 'http://host.docker.internal:8081/payments/aggregator' --header 'Content-Type: application/json' --header 'Cookie: JSESSIONID=5A5EE3A133ACFBB487A1512988C4A119'", returnStdout: true).trim()
                     // Use jq to check if the response is as expected
-                    def isValid = sh(script: "echo '${response}' | jq -e '.firstName == \"Sam\" and .lastName == \"Markson\"'", returnStatus: true) == 0
+                    def isValid = sh(script: """
+                        echo '${response}' | jq -e '
+                        .source == "Payment Aggregator response : has SENSITIVE PCI" and
+                        .firstName == "Sam" and
+                        .lastName == "Markson" and
+                        .maritalStatus == "M" and
+                        .citizenship == "USA" and
+                        .currentResidenceCountry == "GB" and
+                        .creditcardnumber == "5242677622358871"
+                        '
+                    """, returnStatus: true) == 0
                     def currentReportContent = readFile 'tap-results.tap'
                     if (isValid) {
                         echo '***** Payment Aggregator Response is Valid *****'
@@ -67,6 +78,29 @@ pipeline {
                         echo '***** Payment Aggregator Response is Invalid *****'
                         writeFile file: 'tap-results.tap', text: currentReportContent + 'not ok 1 - Payment Aggregator Response is Invalid\n'
                     }
+
+                    echo '***** Executing Customer Aggregator Scenario *****'
+                    response = sh(script: "curl --location --silent 'http://host.docker.internal:8082/customers/aggregator' --header 'Content-Type: application/json' --header 'Cookie: JSESSIONID=5A5EE3A133ACFBB487A1512988C4A119'", returnStdout: true).trim()
+                    // Use jq to check if the response is as expected
+                    isValid = sh(script: """
+                    echo '${response}' | jq -e '
+                    .source == "Customer Aggregator response : has SENSITIVE PII" and
+                    .firstName == "Peter" and
+                    .lastName == "Markel" and
+                    .citizenship == "FRA" and
+                    .telephoneNumber == "+826785438752" and
+                    .emailAddress == "peter_m@gmail.com"
+                    '
+                    """, returnStatus: true) == 0
+                    currentReportContent = readFile 'tap-results.tap'
+                    if (isValid) {
+                        echo '***** Customer Aggregator Response is Valid *****'
+                        writeFile file: 'tap-results.tap', text: currentReportContent + 'ok 1 - Customer Aggregator Response is Valid\n'
+                    } else {
+                        echo '***** Customer Aggregator Response is Invalid *****'
+                        writeFile file: 'tap-results.tap', text: currentReportContent + 'not ok 1 - Customer Aggregator Response is Invalid\n'
+                    }
+
                     def content = readFile 'tap-results.tap'
                     echo '***** Content of tap-results.tap ::' + content + ' *****'
                 }
