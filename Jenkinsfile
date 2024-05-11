@@ -128,7 +128,7 @@ pipeline {
                     }
 
                     echo '***** Executing Customers Report Scenario *****'
-                    response = sh(script: "curl --location --silent 'http://host.docker.internal:8079/view/payments/report' --header 'Content-Type: application/json' --header 'Cookie: JSESSIONID=5A5EE3A133ACFBB487A1512988C4A119'", returnStdout: true).trim()
+                    response = sh(script: "curl --location --silent 'http://host.docker.internal:8079/view/customers/report' --header 'Content-Type: application/json' --header 'Cookie: JSESSIONID=5A5EE3A133ACFBB487A1512988C4A119'", returnStdout: true).trim()
                     // Use jq to check if the response is as expected
                     isValid = sh(script: """
                         echo '${response}'
