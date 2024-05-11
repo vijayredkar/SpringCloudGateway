@@ -43,6 +43,8 @@ pipeline {
                 script {
                     echo "***** Deploying application using Docker Compose *****"
                     sh 'docker-compose up --build -d'
+                    // Pause the pipeline for a predetermined time
+                    sleep(30) // Sleep for 30 seconds
                 }
             }
         }
