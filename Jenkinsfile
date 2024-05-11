@@ -109,7 +109,7 @@ pipeline {
                     isValid = sh(script: """
                         echo '${response}'
                         echo '${response}' | jq -e '
-                        .source == \"Payments Aggregator response : has SENSITIVE PCI\" and
+                        .source == \"Payment Aggregator response : has SENSITIVE PCI\" and
                         .firstName == \"****\" and
                         .lastName == \"****\" and
                         .maritalStatus == \"M\" and
