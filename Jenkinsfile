@@ -107,12 +107,12 @@ pipeline {
                     isValid = sh(script: """
                         echo '\${response}' | jq -e '
                         .source == "Payment Aggregator response : has SENSITIVE PCI" and
-                        (.firstName | test("^\\*+$")) and    // Check if firstName is anonymized correctly
-                        (.lastName | test("^\\*+$")) and     // Check if lastName is anonymized correctly
+                        (.firstName | test("^\\*+$")) and
+                        (.lastName | test("^\\*+$")) and
                         .maritalStatus == "M" and
                         .citizenship == "USA" and
                         .currentResidenceCountry == "GB" and
-                        (.creditcardnumber | test("^\\*+$")) // Check if creditcardnumber is anonymized correctly
+                        (.creditcardnumber | test("^\\*+$"))
                         '
                     """, returnStatus: true) == 0
                     currentReportContent = readFile 'tap-results.tap'
@@ -130,11 +130,11 @@ pipeline {
                     isValid = sh(script: """
                         echo '\${response}' | jq -e '
                         .source == "Customer Aggregator response : has SENSITIVE PII" and
-                        (.firstName | test("^\\*+$")) and    // Verify firstName is correctly anonymized
-                        (.lastName | test("^\\*+$")) and     // Verify lastName is correctly anonymized
+                        (.firstName | test("^\\*+$")) and
+                        (.lastName | test("^\\*+$")) and
                         .citizenship == "FRA" and
-                        (.telephoneNumber | test("^\\*+$")) and // Verify telephoneNumber is anonymized
-                        (.emailAddress | test("^\\*+$"))        // Verify emailAddress is anonymized
+                        (.telephoneNumber | test("^\\*+$")) and
+                        (.emailAddress | test("^\\*+$"))
                         '
                     """, returnStatus: true) == 0
                     currentReportContent = readFile 'tap-results.tap'
