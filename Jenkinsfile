@@ -59,8 +59,7 @@ pipeline {
                     // Assume these are your curl commands and you capture the output
                     def response = sh(script: "curl --location --silent 'http://host.docker.internal:8081/payments/aggregator' --header 'Content-Type: application/json' --header 'Cookie: JSESSIONID=5A5EE3A133ACFBB487A1512988C4A119'", returnStdout: true).trim()
                     // Use jq to check if the response is as expected
-                    def isValid = sh(script: """
-                        echo '\\${response}' | jq -e '
+                    def isValid = sh(script: """ echo '${response}' | jq -e '
                         .source == "Payments Aggregator response : has SENSITIVE PCI" and
                         .firstName == "Sam" and
                         .lastName == "Markson" and
@@ -82,8 +81,7 @@ pipeline {
                     echo '***** Executing Customers Aggregator Scenario *****'
                     response = sh(script: "curl --location --silent 'http://host.docker.internal:8082/customers/aggregator' --header 'Content-Type: application/json' --header 'Cookie: JSESSIONID=5A5EE3A133ACFBB487A1512988C4A119'", returnStdout: true).trim()
                     // Use jq to check if the response is as expected
-                    isValid = sh(script: """
-                    echo '\\${response}' | jq -e '
+                    isValid = sh(script: """ echo '${response}' | jq -e '
                     .source == "Customer Aggregator response : has SENSITIVE PII" and
                     .firstName == "Peter" and
                     .lastName == "Markel" and
@@ -104,8 +102,7 @@ pipeline {
                     echo '***** Executing Payments Report Scenario *****'
                     response = sh(script: "curl --location --silent 'http://host.docker.internal:8079/view/payments/report' --header 'Content-Type: application/json' --header 'Cookie: JSESSIONID=5A5EE3A133ACFBB487A1512988C4A119'", returnStdout: true).trim()
                     // Use jq to check if the response is as expected
-                    isValid = sh(script: """
-                    echo '\\${response}' | jq -e '
+                    isValid = sh(script: """ echo '${response}' | jq -e '
                     .source == "Payment Aggregator response : has SENSITIVE PCI" and
                     (.firstName | test("^\\*+$")) and    // Check if firstName is anonymized correctly
                     (.lastName | test("^\\*+$")) and     // Check if lastName is anonymized correctly
@@ -127,8 +124,7 @@ pipeline {
                     echo '***** Executing Customers Report Scenario *****'
                     response = sh(script: "curl --location --silent 'http://host.docker.internal:8079/view/payments/report' --header 'Content-Type: application/json' --header 'Cookie: JSESSIONID=5A5EE3A133ACFBB487A1512988C4A119'", returnStdout: true).trim()
                     // Use jq to check if the response is as expected
-                    isValid = sh(script: """
-                    echo '\\${response}' | jq -e '
+                    isValid = sh(script: """ echo '${response}' | jq -e '
                     .source == "Customer Aggregator response : has SENSITIVE PII" and
                     (.firstName | test("^\\*+$")) and    // Verify firstName is correctly anonymized
                     (.lastName | test("^\\*+$")) and     // Verify lastName is correctly anonymized
