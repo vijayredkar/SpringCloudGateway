@@ -3,11 +3,11 @@ spring:
     gateway:
       routes:
       - id: payments-view
-        uri: http://localhost:8079/
+        uri: http://customer-payment-client-app:8079/
         predicates:
         - Path=/view/payments/customer
       - id: payments-aggregate
-        uri: http://localhost:8081/
+        uri: http://payments-processor-app:8081/
         predicates:
         - Path=/payments/aggregator
       

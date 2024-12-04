@@ -1,15 +1,17 @@
+server:
+  port: 8888
 spring:
   cloud:
     gateway:
       routes:
       - id: payments-aggregate
-        uri: http://localhost:8081/
+        uri: http://payments-processor-app:8081/
         predicates:
         - Path=/payments/aggregator
         filters:
         - MaskSensitiveResponse=loanNumber,%%%
       - id: customers-aggregate
-        uri: http://localhost:8082/
+        uri: http://customers-processor-app:8082/
         predicates:
         - Path=/customers/aggregator
         filters:
